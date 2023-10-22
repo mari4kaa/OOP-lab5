@@ -4,6 +4,10 @@
 #include "framework.h"
 #include "Lab2.h"
 #include "shape_editor.h"
+#include "ToolBar.h"
+
+ShapeObjectsEditor MainEditor;
+ToolBar Toolbar;
 
 #define MAX_LOADSTRING 100
 
@@ -25,8 +29,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // TODO: Place code here.
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -57,10 +59,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
-
-//
-//  FUNCTION: MyRegisterClass()
-//
 //  PURPOSE: Registers the window class.
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
@@ -84,16 +82,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   FUNCTION: InitInstance(HINSTANCE, int)
-//
+
 //   PURPOSE: Saves instance handle and creates main window
-//
-//   COMMENTS:
-//
-//        In this function, we save the instance handle in a global variable and
-//        create and display the main program window.
-//
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
@@ -112,26 +103,60 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    int wmId, wmEvent;
     switch (message)
     {
+    case WM_CREATE:
+        Toolbar.OnCreate(hWnd, hInst);
+        Toolbar.OnToolMove(hWnd, ID_TOOL_POINT);
+        MainEditor.StartPointEditor(hWnd);
+        break;
+    case WM_SIZE:
+        Toolbar.OnSize(hWnd);
+        break;
+    case WM_NOTIFY:
+        Toolbar.OnNotify(hWnd, wParam, lParam);
+        break;
+    case WM_LBUTTONDOWN:
+        MainEditor.OnLBdown(hWnd);
+        break;
+    case WM_LBUTTONUP:
+        MainEditor.OnLBup(hWnd);
+        break;
+    case WM_MOUSEMOVE:
+        MainEditor.OnMouseMove(hWnd);
+        break;
+    case WM_PAINT:
+        MainEditor.OnPaint(hWnd);
+        break;
     case WM_COMMAND:
         {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
+            wmId = LOWORD(wParam);
+            wmEvent = HIWORD(wParam);
             switch (wmId)
             {
+            case IDM_POINT:
+            case ID_TOOL_POINT:
+                Toolbar.OnToolMove(hWnd, ID_TOOL_POINT);
+                MainEditor.StartPointEditor(hWnd);
+                break;
+            case IDM_LINE:
+            case ID_TOOL_LINE:
+                Toolbar.OnToolMove(hWnd, ID_TOOL_LINE);
+                MainEditor.StartLineEditor(hWnd);
+                break;
+            case IDM_RECT:
+            case ID_TOOL_RECT:
+                Toolbar.OnToolMove(hWnd, ID_TOOL_RECT);
+                MainEditor.StartRectEditor(hWnd);
+                break;
+            case IDM_ELLIPSE:
+            case ID_TOOL_ELLIPSE:
+                Toolbar.OnToolMove(hWnd, ID_TOOL_ELLIPSE);
+                MainEditor.StartEllipseEditor(hWnd);
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -141,14 +166,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
