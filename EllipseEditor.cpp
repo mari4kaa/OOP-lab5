@@ -26,7 +26,7 @@ void EllipseEditor::OnMouseMove(HWND hWnd)
     {
         hdc = GetDC(hWnd);
         SetROP2(hdc, R2_NOTXORPEN);
-        hPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+        hPen = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
         hPenOld = (HPEN)SelectObject(hdc, hPen);
 
         Arc(hdc, xs1, ys1, xs2, ys2, 0, 0, 0, 0);

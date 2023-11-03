@@ -6,7 +6,7 @@ ToolBar::ToolBar(void) {};
 
 void ToolBar::OnCreate(HWND hWnd, HINSTANCE hInst)
 {
-    TBBUTTON tbb[4];
+    TBBUTTON tbb[6];
     TBADDBITMAP tbab;
     tbab.hInst = HINST_COMMCTRL;
     tbab.nID = IDB_STD_SMALL_COLOR;
@@ -32,14 +32,24 @@ void ToolBar::OnCreate(HWND hWnd, HINSTANCE hInst)
     tbb[3].fsStyle = TBSTYLE_BUTTON;
     tbb[3].idCommand = ID_TOOL_ELLIPSE;
 
+    tbb[4].iBitmap = 4;
+    tbb[4].fsState = TBSTATE_ENABLED;
+    tbb[4].fsStyle = TBSTYLE_BUTTON;
+    tbb[4].idCommand = ID_TOOL_LINEOO;
+
+    tbb[5].iBitmap = 5;
+    tbb[5].fsState = TBSTATE_ENABLED;
+    tbb[5].fsStyle = TBSTYLE_BUTTON;
+    tbb[5].idCommand = ID_TOOL_CUBE;
+
     hwndToolBar = CreateToolbarEx(hWnd,
         WS_CHILD | WS_VISIBLE | WS_BORDER | WS_CLIPSIBLINGS | CCS_TOP | TBSTYLE_TOOLTIPS,
         IDC_MY_TOOLBAR,
-        4,
+        6,
         hInst,
         IDB_BITMAP1,
         tbb,
-        4,
+        6,
         24, 24, 24, 24,
         sizeof(TBBUTTON));
 }
@@ -65,27 +75,12 @@ void ToolBar::OnToolMove(HWND hWnd, int ID_TOOL_MOVE)
     oldButton = ID_TOOL_MOVE;
 }
 
-void ToolBar::OnNotify(HWND hWnd, WPARAM wParam, LPARAM lParam)
+void ToolBar::OnNotify(HWND hWnd, LPARAM lParam, LPCWSTR shapeName)
 {
     LPNMHDR pnmh = (LPNMHDR)lParam;
     if (pnmh->code == TTN_NEEDTEXT)
     {
         LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT)lParam;
-        switch (lpttt->hdr.idFrom)
-        {
-        case ID_TOOL_POINT:
-            lstrcpy(lpttt->szText, L"Point");
-            break;
-        case ID_TOOL_LINE:
-            lstrcpy(lpttt->szText, L"Line");
-            break;
-        case ID_TOOL_RECT:
-            lstrcpy(lpttt->szText, L"Rectangle");
-            break;
-        case ID_TOOL_ELLIPSE:
-            lstrcpy(lpttt->szText, L"Ellipse");
-            break;
-        default: lstrcpy(lpttt->szText, L"Unknown");
-        }
+        lstrcpyW(lpttt->szText, shapeName);
     }
 }

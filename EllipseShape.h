@@ -1,10 +1,13 @@
 #pragma once
 #include "shape.h"
 
-class EllipseShape : public Shape
+class EllipseShape : virtual public Shape
 {
 public:
     EllipseShape(void);
-    ~EllipseShape(void);
+    virtual ~EllipseShape(void);
     void Show(HDC);
+    void PaintRubberMark(HWND);
+    LPCWSTR GetName();
+    Shape* CreateShape();
 };

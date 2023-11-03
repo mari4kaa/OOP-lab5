@@ -24,6 +24,10 @@
 #define ID_ELLIPSE                      32779
 #define IDM_RECT                        32780
 #define IDM_ELLIPSE                     32781
+#define ID_OBJECTS_LINEOO               32782
+#define ID_OBJECTS_CUBE                 32783
+#define IDM_LINEOO                      32784
+#define IDM_CUBE                        32785
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -32,7 +36,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        130
-#define _APS_NEXT_COMMAND_VALUE         32782
+#define _APS_NEXT_COMMAND_VALUE         32786
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

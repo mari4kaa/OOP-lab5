@@ -3,11 +3,9 @@
 
 #include "framework.h"
 #include "Lab2.h"
-#include "shape_editor.h"
-#include "ToolBar.h"
+#include "MyEditor.h"
 
-ShapeObjectsEditor MainEditor;
-ToolBar Toolbar;
+MyEditor* MainEditor = NULL;
 
 #define MAX_LOADSTRING 100
 
@@ -89,7 +87,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
@@ -109,27 +107,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        Toolbar.OnCreate(hWnd, hInst);
-        Toolbar.OnToolMove(hWnd, ID_TOOL_POINT);
-        MainEditor.StartPointEditor(hWnd);
+        MainEditor = new MyEditor;
+        MainEditor->OnCreate(hWnd, hInst);
+        MainEditor->Start(hWnd, new PointShape, ID_TOOL_POINT);
         break;
     case WM_SIZE:
-        Toolbar.OnSize(hWnd);
+        MainEditor->OnSize(hWnd);
         break;
     case WM_NOTIFY:
-        Toolbar.OnNotify(hWnd, wParam, lParam);
+        MainEditor->OnNotify(hWnd, lParam);
         break;
     case WM_LBUTTONDOWN:
-        MainEditor.OnLBdown(hWnd);
+        MainEditor->OnLBdown(hWnd);
         break;
     case WM_LBUTTONUP:
-        MainEditor.OnLBup(hWnd);
+        MainEditor->OnLBup(hWnd);
         break;
     case WM_MOUSEMOVE:
-        MainEditor.OnMouseMove(hWnd);
+        MainEditor->OnMouseMove(hWnd);
         break;
     case WM_PAINT:
-        MainEditor.OnPaint(hWnd);
+        MainEditor->OnPaint(hWnd);
         break;
     case WM_COMMAND:
         {
@@ -139,23 +137,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
             case IDM_POINT:
             case ID_TOOL_POINT:
-                Toolbar.OnToolMove(hWnd, ID_TOOL_POINT);
-                MainEditor.StartPointEditor(hWnd);
+                MainEditor->Start(hWnd, new PointShape, ID_TOOL_POINT);
                 break;
             case IDM_LINE:
             case ID_TOOL_LINE:
-                Toolbar.OnToolMove(hWnd, ID_TOOL_LINE);
-                MainEditor.StartLineEditor(hWnd);
+                //MEMORY LEAK???
+                MainEditor->Start(hWnd, new LineShape, ID_TOOL_LINE);
                 break;
             case IDM_RECT:
             case ID_TOOL_RECT:
-                Toolbar.OnToolMove(hWnd, ID_TOOL_RECT);
-                MainEditor.StartRectEditor(hWnd);
+                //MEMORY LEAK???
+                MainEditor->Start(hWnd, new RectShape, ID_TOOL_RECT);
                 break;
             case IDM_ELLIPSE:
             case ID_TOOL_ELLIPSE:
-                Toolbar.OnToolMove(hWnd, ID_TOOL_ELLIPSE);
-                MainEditor.StartEllipseEditor(hWnd);
+                //MEMORY LEAK???
+                MainEditor->Start(hWnd, new EllipseShape, ID_TOOL_ELLIPSE);
+                break;
+            case IDM_LINEOO:
+            case ID_TOOL_LINEOO:
+                MainEditor->Start(hWnd, new LineOOShape, ID_TOOL_LINEOO);
+                break;
+            case IDM_CUBE:
+            case ID_TOOL_CUBE:
+                MainEditor->Start(hWnd, new CubeShape, ID_TOOL_CUBE);
                 break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
@@ -169,6 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+        delete MainEditor;
         PostQuitMessage(0);
         break;
     default:

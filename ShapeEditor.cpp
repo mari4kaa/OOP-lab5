@@ -5,13 +5,9 @@ ShapeEditor::~ShapeEditor(void) {};
 bool ShapeEditor::PaintingNow = FALSE;
 Scene ShapeEditor::scene;
 
-void ShapeEditor::OnPaint(HWND hWnd)
+void ShapeEditor::OnPaint(HWND hWnd, HDC hdc, PAINTSTRUCT ps)
 {
-    PAINTSTRUCT ps;
-    HDC hdc;
-    hdc = BeginPaint(hWnd, &ps);
     scene.Show(hdc);
-    EndPaint(hWnd, &ps);
 }
 
 void ShapeEditor::OnLBdown(HWND hWnd)

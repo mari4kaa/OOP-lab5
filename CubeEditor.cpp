@@ -1,20 +1,18 @@
 #include "resource.h"
-#include "RectEditor.h"
-#include "RectShape.h"
+#include "CubeShape.h"
+#include "CubeEditor.h"
 
-RectEditor::~RectEditor(void) {};
+CubeEditor::~CubeEditor(void) {};
 
-void RectEditor::OnLBup(HWND hWnd)
+void CubeEditor::OnLBup(HWND hWnd)
 {
     PaintingNow = FALSE;
-    Shape* p_currentShape = new RectShape;
+    Shape* p_currentShape = reinterpret_cast<Shape*> (new CubeShape);
 
     GetCursorPos(&point);
     ScreenToClient(hWnd, &point);
     xs2 = point.x;
     ys2 = point.y;
-    xs1 = (xs1 * 2) - xs2;
-    ys1 = (ys1 * 2) - ys2;
     p_currentShape->Set(xs1, ys1, xs2, ys2);
 
     scene.PushShape(p_currentShape);
@@ -22,7 +20,7 @@ void RectEditor::OnLBup(HWND hWnd)
     InvalidateRect(hWnd, NULL, TRUE);
 };
 
-void RectEditor::OnMouseMove(HWND hWnd)
+void CubeEditor::OnMouseMove(HWND hWnd)
 {
     if (PaintingNow)
     {
@@ -31,13 +29,7 @@ void RectEditor::OnMouseMove(HWND hWnd)
         hPen = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
         hPenOld = (HPEN)SelectObject(hdc, hPen);
 
-        Rectangle(hdc, (xs1 * 2) - xs2, (ys1 * 2) - ys2, xs2, ys2);
-
-        GetCursorPos(&point);
-        ScreenToClient(hWnd, &point);
-        xs2 = point.x;
-        ys2 = point.y;
-        Rectangle(hdc, (xs1 * 2) - xs2, (ys1 * 2) - ys2, xs2, ys2);
+        //TODO
 
         SelectObject(hdc, hPenOld);
         DeleteObject(hPen);

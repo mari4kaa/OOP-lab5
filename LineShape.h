@@ -1,10 +1,13 @@
 #pragma once
 #include "shape.h"
 
-class LineShape : public Shape
+class LineShape : virtual public Shape
 {
 public:
     LineShape(void);
-    ~LineShape(void);
+    virtual ~LineShape(void);
     void Show(HDC);
+    void PaintRubberMark(HWND);
+    LPCWSTR GetName();
+    Shape* CreateShape();
 };
