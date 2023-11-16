@@ -18,5 +18,5 @@ public:
     void OnCreate(HWND, HINSTANCE);
     void OnSize(HWND);
     void OnToolMove(HWND, int);
-    void OnNotify(HWND, LPARAM, LPCWSTR);
+    void OnNotify(HWND, LPARAM);
 };

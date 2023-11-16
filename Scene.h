@@ -1,18 +1,21 @@
 #pragma once
 #include "shape.h"
-#define MY_SHAPE_ARRAY_SIZE 113
+#include <list>
+#include <fstream>
 
 class Scene
 {
 private:
-    Shape** pcshape;
-    int idx;
+    std::list<Shape*> ShapeList;
+    LPCSTR fileName = "ShapesTable.txt";
+    FILE* fout;
+    Shape* currentShape = NULL;
 public:
     Scene(void);
     ~Scene(void);
     void PushShape(Shape*);
+    void DeleteShape(int);
     Shape* GetLastShape();
-    void Show(HDC);
-    bool IsAvailable();
-    bool IsPaintable();
+    void Show(HDC, BOOL, int);
+    void FormString(WCHAR*);
 };

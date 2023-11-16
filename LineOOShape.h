@@ -10,8 +10,8 @@ private:
 public:
     LineOOShape(void);
     ~LineOOShape(void);
-    void Show(HDC);
-    void PaintRubberMark(HWND);
+    void Show(HDC, BOOL, BOOL);
+    void SetColor(HDC, COLORREF) {};
     LPCWSTR GetName();
     Shape* CreateShape();
 };

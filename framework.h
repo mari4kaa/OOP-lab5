@@ -15,3 +15,6 @@
 #include <tchar.h>
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
+
+#define WM_TO_HIGHLIGHT_SHAPE (WM_USER + 1001)
+#define WM_TO_DELETE_SHAPE (WM_USER + 1002)

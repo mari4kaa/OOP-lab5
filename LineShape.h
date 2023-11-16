@@ -6,8 +6,8 @@ class LineShape : virtual public Shape
 public:
     LineShape(void);
     virtual ~LineShape(void);
-    void Show(HDC);
-    void PaintRubberMark(HWND);
+    void Show(HDC, BOOL, BOOL);
+    void SetColor(HDC, COLORREF);
     LPCWSTR GetName();
     Shape* CreateShape();
 };

@@ -27,7 +27,7 @@
     <ClInclude Include="Lab2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyEditor.h">
+    <ClInclude Include="MainEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shape.h">
@@ -60,12 +60,18 @@
     <ClInclude Include="CubeShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MainTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lab2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyEditor.cpp">
+    <ClCompile Include="MainEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shape.cpp">
@@ -95,9 +101,15 @@
     <ClCompile Include="CubeShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lab2.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="MainTable.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

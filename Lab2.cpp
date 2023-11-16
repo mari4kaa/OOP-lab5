@@ -3,9 +3,11 @@
 
 #include "framework.h"
 #include "Lab2.h"
-#include "MyEditor.h"
+#include "MainEditor.h"
+#include "MainTable.h"
 
-MyEditor* MainEditor = NULL;
+MainEditor* Editor = NULL;
+MainTable* Table = NULL;
 
 #define MAX_LOADSTRING 100
 
@@ -107,27 +109,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        MainEditor = new MyEditor;
-        MainEditor->OnCreate(hWnd, hInst);
-        MainEditor->Start(hWnd, new PointShape, ID_TOOL_POINT);
+    {
+        Editor = MainEditor::getInstance();
+        Editor->OnCreate(hWnd, hInst);
+        LPCWSTR coordsString = Editor->Start(hWnd, new PointShape, ID_TOOL_POINT);
+
+        Table = MainTable::getInstance();
+        Table->OnCreate(hWnd, hInst);
+        Table->Add(coordsString);
         break;
+    }
     case WM_SIZE:
-        MainEditor->OnSize(hWnd);
+        Editor->OnSize(hWnd);
         break;
     case WM_NOTIFY:
-        MainEditor->OnNotify(hWnd, lParam);
+        Editor->OnNotify(hWnd, lParam);
         break;
     case WM_LBUTTONDOWN:
-        MainEditor->OnLBdown(hWnd);
+        Editor->OnLBdown(hWnd);
         break;
     case WM_LBUTTONUP:
-        MainEditor->OnLBup(hWnd);
+    {
+        LPCWSTR coordsString = Editor->OnLBup(hWnd);
+        Table->Add(coordsString);
         break;
+    }
     case WM_MOUSEMOVE:
-        MainEditor->OnMouseMove(hWnd);
+        Editor->OnMouseMove(hWnd);
         break;
+    case WM_TO_HIGHLIGHT_SHAPE:
     case WM_PAINT:
-        MainEditor->OnPaint(hWnd);
+        if (!wParam) wParam = 0;
+        Editor->OnPaint(hWnd, wParam - 1);
+        break;
+    case WM_TO_DELETE_SHAPE:
+        if (!wParam) wParam = 0;
+        Editor->OnDeleteShape(wParam - 1);
+        wParam = 0;
         break;
     case WM_COMMAND:
         {
@@ -135,32 +153,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             wmEvent = HIWORD(wParam);
             switch (wmId)
             {
+            case IDM_TABLE:
+                Table->Show();
+                break;
+
             case IDM_POINT:
             case ID_TOOL_POINT:
-                MainEditor->Start(hWnd, new PointShape, ID_TOOL_POINT);
+                Editor->Start(hWnd, new PointShape, ID_TOOL_POINT);
                 break;
             case IDM_LINE:
             case ID_TOOL_LINE:
-                //MEMORY LEAK???
-                MainEditor->Start(hWnd, new LineShape, ID_TOOL_LINE);
+                Editor->Start(hWnd, new LineShape, ID_TOOL_LINE);
                 break;
             case IDM_RECT:
             case ID_TOOL_RECT:
-                //MEMORY LEAK???
-                MainEditor->Start(hWnd, new RectShape, ID_TOOL_RECT);
+                Editor->Start(hWnd, new RectShape, ID_TOOL_RECT);
                 break;
             case IDM_ELLIPSE:
             case ID_TOOL_ELLIPSE:
-                //MEMORY LEAK???
-                MainEditor->Start(hWnd, new EllipseShape, ID_TOOL_ELLIPSE);
+                Editor->Start(hWnd, new EllipseShape, ID_TOOL_ELLIPSE);
                 break;
             case IDM_LINEOO:
             case ID_TOOL_LINEOO:
-                MainEditor->Start(hWnd, new LineOOShape, ID_TOOL_LINEOO);
+                Editor->Start(hWnd, new LineOOShape, ID_TOOL_LINEOO);
                 break;
             case IDM_CUBE:
             case ID_TOOL_CUBE:
-                MainEditor->Start(hWnd, new CubeShape, ID_TOOL_CUBE);
+                Editor->Start(hWnd, new CubeShape, ID_TOOL_CUBE);
                 break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
@@ -174,7 +193,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
-        delete MainEditor;
+        delete Editor;
+        delete Table;
         PostQuitMessage(0);
         break;
     default:

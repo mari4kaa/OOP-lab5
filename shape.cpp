@@ -15,3 +15,4 @@ void Shape::SetEnd(long x2, long y2)
     xs2 = x2;
     ys2 = y2;
 }
+

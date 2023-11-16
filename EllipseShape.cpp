@@ -3,29 +3,27 @@
 EllipseShape::EllipseShape(void) {};
 EllipseShape::~EllipseShape(void) {};
 
-void EllipseShape::Show(HDC hdc)
+void EllipseShape::Show(HDC hdc, BOOL PaintingNow, BOOL isSelected)
 {
-    hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 0));
-    hBrushOld = (HBRUSH)SelectObject(hdc, hBrush);
+    if(!PaintingNow) SetColor(hdc, brushColor);
+    if(isSelected) SetColor(hdc, RGB(255, 0, 0));
 
     Ellipse(hdc, xs1, ys1, xs2, ys2);
 
-    SelectObject(hdc, hBrushOld);
-    DeleteObject(hBrush);
+    if (!PaintingNow || isSelected)
+    {
+        SelectObject(hdc, hBrushOld);
+        DeleteObject(hBrush);
+
+        brushColor = RGB(255, 255, 0);
+    }
 }
 
-void EllipseShape::PaintRubberMark(HWND hWnd)
+void EllipseShape::SetColor(HDC hdc, COLORREF selectedColor)
 {
-    hdc = GetDC(hWnd);
-    SetROP2(hdc, R2_NOTXORPEN);
-    hPen = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
-    hPenOld = (HPEN)SelectObject(hdc, hPen);
-
-    Arc(hdc, xs1, ys1, xs2, ys2, 0, 0, 0, 0);
-
-    SelectObject(hdc, hPenOld);
-    DeleteObject(hPen);
-    ReleaseDC(hWnd, hdc);
+    brushColor = selectedColor;
+    hBrush = (HBRUSH)CreateSolidBrush(selectedColor);
+    hBrushOld = (HBRUSH)SelectObject(hdc, hBrush);
 }
 
 LPCWSTR EllipseShape::GetName()

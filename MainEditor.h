@@ -9,10 +9,15 @@
 #include "ToolBar.h"
 #include "Scene.h"
 
-class MyEditor
+class MainEditor
 {
 private:
+    static MainEditor* p_instance;
     Shape* pshape = NULL;
+    MainEditor(void);
+    MainEditor(const MainEditor&);
+    MainEditor& operator=(MainEditor&);
+
     HDC hdc;
     PAINTSTRUCT ps;
     HPEN hPenOld, hPen;
@@ -20,16 +25,17 @@ private:
     POINT point;
 
     LPCWSTR shapeName;
-    Scene* scene = new Scene;
+    Scene scene;
     static ToolBar Toolbar;
 public:
-    MyEditor(void);
-    ~MyEditor(void);
-    void Start(HWND, Shape*, int);
+    static MainEditor* getInstance();
+    ~MainEditor(void);
+    LPCWSTR Start(HWND, Shape*, int);
     void OnLBdown(HWND);
-    void OnLBup(HWND);
+    LPCWSTR OnLBup(HWND);
     void OnMouseMove(HWND);
-    void OnPaint(HWND);
+    void OnPaint(HWND, int);
+    void OnDeleteShape(int);
 
     void OnCreate(HWND, HINSTANCE);
     void OnSize(HWND);

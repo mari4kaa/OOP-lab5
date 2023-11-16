@@ -3,30 +3,29 @@
 RectShape::RectShape(void) {};
 RectShape::~RectShape(void) {};
 
-void RectShape::Show(HDC hdc)
+void RectShape::Show(HDC hdc, BOOL PaintingNow, BOOL isSelected)
 {
-    int xstart = (xs1 * 2) - xs2;
-    int ystart = (ys1 * 2) - ys2;
+    if (!PaintingNow && isSelected) SetColor(hdc, RGB(255, 0, 0));
+    long xstart = (xs1 * 2) - xs2;
+    long ystart = (ys1 * 2) - ys2;
     MoveToEx(hdc, xstart, ystart, NULL);
     LineTo(hdc, xs2, ystart);
     LineTo(hdc, xs2, ys2);
     LineTo(hdc, xstart, ys2);
     LineTo(hdc, xstart, ystart);
+
+    if (!PaintingNow && isSelected)
+    {
+        SelectObject(hdc, hPenOld);
+        DeleteObject(hPen);
+    }
 }
 
-void RectShape::PaintRubberMark(HWND hWnd)
+void RectShape::SetColor(HDC hdc, COLORREF selectedColor)
 {
-    hdc = GetDC(hWnd);
-    SetROP2(hdc, R2_NOTXORPEN);
-    hPen = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
+    hPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
     hPenOld = (HPEN)SelectObject(hdc, hPen);
-
-    Rectangle(hdc, (xs1 * 2) - xs2, (ys1 * 2) - ys2, xs2, ys2);
-
-    SelectObject(hdc, hPenOld);
-    DeleteObject(hPen);
-    ReleaseDC(hWnd, hdc);
-}
+};
 
 LPCWSTR RectShape::GetName()
 {

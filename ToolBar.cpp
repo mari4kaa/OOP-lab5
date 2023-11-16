@@ -75,12 +75,33 @@ void ToolBar::OnToolMove(HWND hWnd, int ID_TOOL_MOVE)
     oldButton = ID_TOOL_MOVE;
 }
 
-void ToolBar::OnNotify(HWND hWnd, LPARAM lParam, LPCWSTR shapeName)
+void ToolBar::OnNotify(HWND hWnd, LPARAM lParam)
 {
     LPNMHDR pnmh = (LPNMHDR)lParam;
     if (pnmh->code == TTN_NEEDTEXT)
     {
         LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT)lParam;
-        lstrcpyW(lpttt->szText, shapeName);
+        switch (lpttt->hdr.idFrom)
+        {
+        case ID_TOOL_POINT:
+            lstrcpy(lpttt->szText, L"Point");
+            break;
+        case ID_TOOL_LINE:
+            lstrcpy(lpttt->szText, L"Line");
+            break;
+        case ID_TOOL_RECT:
+            lstrcpy(lpttt->szText, L"Rectangle");
+            break;
+        case ID_TOOL_ELLIPSE:
+            lstrcpy(lpttt->szText, L"Ellipse");
+            break;
+        case ID_TOOL_CUBE:
+            lstrcpy(lpttt->szText, L"Cube");
+            break;
+        case ID_TOOL_LINEOO:
+            lstrcpy(lpttt->szText, L"LineOO");
+            break;
+        default: lstrcpy(lpttt->szText, L"Unknown");
+        }
     }
 }

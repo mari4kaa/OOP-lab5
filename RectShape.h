@@ -3,11 +3,13 @@
 
 class RectShape : virtual public Shape
 {
+private:
+    long xstart, ystart;
 public:
     RectShape(void);
     virtual ~RectShape(void);
-    void Show(HDC);
-    void PaintRubberMark(HWND);
+    void Show(HDC, BOOL, BOOL);
+    void SetColor(HDC, COLORREF);
     LPCWSTR GetName();
     Shape* CreateShape();
 };

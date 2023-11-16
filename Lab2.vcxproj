@@ -144,14 +144,16 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="LineOOShape.h" />
     <ClInclude Include="LineShape.h" />
+    <ClInclude Include="MainTable.h" />
     <ClInclude Include="PointShape.h" />
     <ClInclude Include="RectShape.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="Lab2.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="MyEditor.h" />
+    <ClInclude Include="MainEditor.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ToolBar.h" />
   </ItemGroup>
@@ -160,16 +162,18 @@
     <ClCompile Include="EllipseShape.cpp" />
     <ClCompile Include="LineOOShape.cpp" />
     <ClCompile Include="LineShape.cpp" />
+    <ClCompile Include="MainTable.cpp" />
     <ClCompile Include="PointShape.cpp" />
     <ClCompile Include="RectShape.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Lab2.cpp" />
     <ClCompile Include="shape.cpp" />
-    <ClCompile Include="MyEditor.cpp" />
+    <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="ToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lab2.rc" />
+    <ResourceCompile Include="MainTable.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bitmap1.bmp" />
