@@ -5,6 +5,8 @@
 #include "Lab2.h"
 #include "MainEditor.h"
 #include "MainTable.h"
+#include "commdlg.h"
+
 
 MainEditor* Editor = NULL;
 MainTable* Table = NULL;
@@ -21,6 +23,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+LPWSTR getFilename(WCHAR* szFileName, bool forSaving);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -111,12 +114,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
     {
         Editor = MainEditor::getInstance();
-        Editor->OnCreate(hWnd, hInst);
-        LPCWSTR coordsString = Editor->Start(hWnd, new PointShape, ID_TOOL_POINT);
+        Table = new MainTable;
 
-        Table = MainTable::getInstance();
         Table->OnCreate(hWnd, hInst);
-        Table->Add(coordsString);
+        Editor->OnCreate(hWnd, hInst, Table->Add);
+        Editor->Start(hWnd, new PointShape, ID_TOOL_POINT);
         break;
     }
     case WM_SIZE:
@@ -130,8 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONUP:
     {
-        LPCWSTR coordsString = Editor->OnLBup(hWnd);
-        Table->Add(coordsString);
+        Editor->OnLBup(hWnd, Table->Add);
         break;
     }
     case WM_MOUSEMOVE:
@@ -145,7 +146,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TO_DELETE_SHAPE:
         if (!wParam) wParam = 0;
         Editor->OnDeleteShape(wParam - 1);
-        wParam = 0;
         break;
     case WM_COMMAND:
         {
@@ -153,9 +153,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             wmEvent = HIWORD(wParam);
             switch (wmId)
             {
+
             case IDM_TABLE:
                 Table->Show();
                 break;
+            case ID_FILE_SAVEASTXT:
+            {
+                WCHAR szFileName[MAX_PATH] = {};
+                LPWSTR path = getFilename(szFileName, TRUE);
+                if (path)
+                {
+                    Editor->OnSaveToFile(path);
+                }
+                break;
+            }
+            case ID_FILE_OPENSCENE:
+            {
+                WCHAR szFileName[MAX_PATH] = {};
+                LPWSTR path = getFilename(szFileName, FALSE);
+                if (path)
+                {
+                    Editor->OnOpenFile(hWnd, path, Table->Add, Table->Clear);
+                }
+                break;
+            }
 
             case IDM_POINT:
             case ID_TOOL_POINT:
@@ -221,4 +242,22 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+LPWSTR getFilename(WCHAR* szFileName, bool forSaving)
+{
+    OPENFILENAME ofn;
+
+    ZeroMemory(&ofn, sizeof(ofn));
+
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = (LPCWSTR)L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = (LPWSTR)szFileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = (LPCWSTR)L"txt";
+
+    forSaving? GetSaveFileName(&ofn) : GetOpenFileName(&ofn);
+    return szFileName;
 }

@@ -1,5 +1,4 @@
 #include "resource.h"
-#include "framework.h"
 #include "ToolBar.h"
 
 ToolBar::ToolBar(void) {};
@@ -16,31 +15,37 @@ void ToolBar::OnCreate(HWND hWnd, HINSTANCE hInst)
     tbb[0].fsState = TBSTATE_ENABLED;
     tbb[0].fsStyle = TBSTYLE_BUTTON;
     tbb[0].idCommand = ID_TOOL_POINT;
+    toolTipsMap[ID_TOOL_POINT] = L"Point";
 
     tbb[1].iBitmap = 1;
     tbb[1].fsState = TBSTATE_ENABLED;
     tbb[1].fsStyle = TBSTYLE_BUTTON;
     tbb[1].idCommand = ID_TOOL_LINE;
+    toolTipsMap[ID_TOOL_LINE] = L"Line";
 
     tbb[2].iBitmap = 2;
     tbb[2].fsState = TBSTATE_ENABLED;
     tbb[2].fsStyle = TBSTYLE_BUTTON;
     tbb[2].idCommand = ID_TOOL_RECT;
+    toolTipsMap[ID_TOOL_RECT] = L"Rectangle";
 
     tbb[3].iBitmap = 3;
     tbb[3].fsState = TBSTATE_ENABLED;
     tbb[3].fsStyle = TBSTYLE_BUTTON;
     tbb[3].idCommand = ID_TOOL_ELLIPSE;
+    toolTipsMap[ID_TOOL_ELLIPSE] = L"Ellipse";
 
     tbb[4].iBitmap = 4;
     tbb[4].fsState = TBSTATE_ENABLED;
     tbb[4].fsStyle = TBSTYLE_BUTTON;
     tbb[4].idCommand = ID_TOOL_LINEOO;
+    toolTipsMap[ID_TOOL_LINEOO] = L"LineOO";
 
     tbb[5].iBitmap = 5;
     tbb[5].fsState = TBSTATE_ENABLED;
     tbb[5].fsStyle = TBSTYLE_BUTTON;
     tbb[5].idCommand = ID_TOOL_CUBE;
+    toolTipsMap[ID_TOOL_CUBE] = L"Cube";
 
     hwndToolBar = CreateToolbarEx(hWnd,
         WS_CHILD | WS_VISIBLE | WS_BORDER | WS_CLIPSIBLINGS | CCS_TOP | TBSTYLE_TOOLTIPS,
@@ -81,27 +86,13 @@ void ToolBar::OnNotify(HWND hWnd, LPARAM lParam)
     if (pnmh->code == TTN_NEEDTEXT)
     {
         LPTOOLTIPTEXT lpttt = (LPTOOLTIPTEXT)lParam;
-        switch (lpttt->hdr.idFrom)
+        if (toolTipsMap[lpttt->hdr.idFrom])
         {
-        case ID_TOOL_POINT:
-            lstrcpy(lpttt->szText, L"Point");
-            break;
-        case ID_TOOL_LINE:
-            lstrcpy(lpttt->szText, L"Line");
-            break;
-        case ID_TOOL_RECT:
-            lstrcpy(lpttt->szText, L"Rectangle");
-            break;
-        case ID_TOOL_ELLIPSE:
-            lstrcpy(lpttt->szText, L"Ellipse");
-            break;
-        case ID_TOOL_CUBE:
-            lstrcpy(lpttt->szText, L"Cube");
-            break;
-        case ID_TOOL_LINEOO:
-            lstrcpy(lpttt->szText, L"LineOO");
-            break;
-        default: lstrcpy(lpttt->szText, L"Unknown");
+            lstrcpy(lpttt->szText, toolTipsMap[lpttt->hdr.idFrom]);
+        }
+        else
+        {
+            lstrcpy(lpttt->szText, L"Unknown");
         }
     }
 }

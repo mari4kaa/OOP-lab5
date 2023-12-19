@@ -11,7 +11,6 @@ public:
     virtual ~Shape(void);
     void SetAll(long x1, long y1, long x2, long y2);
     void SetEnd(long x2, long y2);
-    virtual void SetColor(HDC hdc, COLORREF pickedBrushColor) = 0;
     virtual void Show(HDC, BOOL, BOOL) = 0;
     virtual LPCWSTR GetName() = 0;
     virtual Shape* CreateShape() = 0;

@@ -1,0 +1,6 @@
+SHAPE		x1	y1	x2	y2
+Rectangle	262	184	332	260
+Rectangle	488	133	559	201
+Rectangle	750	217	830	312
+Rectangle	414	334	509	390
+Rectangle	600	377	642	477

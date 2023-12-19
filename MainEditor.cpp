@@ -1,9 +1,8 @@
 #include "MainEditor.h"
+#include <BaseTsd.h>
 
 ToolBar MainEditor::Toolbar;
 bool MainEditor::PaintingNow = FALSE;
-
-MainEditor::MainEditor(void) {};
 
 MainEditor* MainEditor::p_instance = 0;
 MainEditor* MainEditor::getInstance()
@@ -13,23 +12,26 @@ MainEditor* MainEditor::getInstance()
         p_instance = new MainEditor();
     }
     return p_instance;
-}
+};
 
 MainEditor::~MainEditor(void)
 {
+    if (p_instance)
+    {
+        delete p_instance;
+    }
+
     if (pshape) delete pshape;
 };
 
-LPCWSTR MainEditor::Start(HWND hWnd, Shape* shape, int ID_TOOL)
+void MainEditor::Start(HWND hWnd, Shape* shape, int ID_TOOL)
 {
     if (pshape) delete pshape;
     pshape = shape;
 
-    shapeName = pshape->GetName();
+    LPCWSTR shapeName = pshape->GetName();
     SetWindowText(hWnd, shapeName);
     Toolbar.OnToolMove(hWnd, ID_TOOL);
-
-    return L"SHAPE\t\tx1\ty1\tx2\ty2\n";
 };
 
 void MainEditor::OnLBdown(HWND hWnd)
@@ -45,7 +47,7 @@ void MainEditor::OnLBdown(HWND hWnd)
     }
 };
 
-LPCWSTR MainEditor::OnLBup(HWND hWnd)
+void MainEditor::OnLBup(HWND hWnd, AddFunction tableAdd)
 {
     WCHAR coordsString[64];
     if (pshape)
@@ -56,12 +58,12 @@ LPCWSTR MainEditor::OnLBup(HWND hWnd)
 
         pshape->SetEnd(point.x, point.y);
         scene.PushShape(pshape);
-        scene.FormString(coordsString);
+        scene.FormCurrentString(coordsString);
 
         pshape = pshape->CreateShape();
         InvalidateRect(hWnd, NULL, TRUE);
     }
-    return coordsString;
+    tableAdd(coordsString);
 };
 
 void MainEditor::OnMouseMove(HWND hWnd)
@@ -94,14 +96,26 @@ void MainEditor::OnPaint(HWND hWnd, int selectedLine)
     EndPaint(hWnd, &ps);
 };
 
+void MainEditor::OnSaveToFile(LPCWSTR path)
+{
+    scene.SaveToFile(path);
+};
+
+void MainEditor::OnOpenFile(HWND hWnd, LPCWSTR path, AddFunction tableAdd, ClearFunction tableClear)
+{
+    scene.OpenFromFile(hWnd, path, tableAdd, tableClear);
+    OnPaint(hWnd, -1);
+};
+
 void MainEditor::OnDeleteShape(int selectedLine)
 {
     scene.DeleteShape(selectedLine);
 }
 
-void MainEditor::OnCreate(HWND hWnd, HINSTANCE hInst)
+void MainEditor::OnCreate(HWND hWnd, HINSTANCE hInst, AddFunction tableAdd)
 {
     Toolbar.OnCreate(hWnd, hInst);
+    tableAdd(L"SHAPE\t\txs1\tys1\txs2\tys2\n");
 };
 
 void MainEditor::OnSize(HWND hWnd)
@@ -111,6 +125,5 @@ void MainEditor::OnSize(HWND hWnd)
 
 void MainEditor::OnNotify(HWND hWnd, LPARAM lParam)
 {
-
     Toolbar.OnNotify(hWnd, lParam);
 };

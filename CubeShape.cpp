@@ -15,11 +15,6 @@ void CubeShape::Show(HDC hdc, BOOL PaintingNow, BOOL isSelected)
     x2_proect = x2 + (x2 - x1) / 3;
     y2_proect = y2 - (y2 - y1) / 3;
 
-    if (!PaintingNow && isSelected)
-    {
-        RectShape::SetColor(hdc, RGB(255, 0, 0));
-        LineShape::SetColor(hdc, RGB(255, 0, 0));
-    }
     RectShape::Show(hdc, PaintingNow, isSelected);
 
     RectShape::SetAll(x1_proect, y1_proect, x2_proect, y2_proect);

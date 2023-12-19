@@ -1,4 +1,6 @@
 #pragma once
+#include "framework.h"
+#include <map>
 
 #define IDC_MY_TOOLBAR 1
 #define ID_TOOL_POINT 1
@@ -13,6 +15,7 @@ class ToolBar
 private:
     int oldButton = 0;
     HWND hwndToolBar = NULL;
+    std::map<int, LPCWSTR> toolTipsMap;
 public:
     ToolBar(void);
     void OnCreate(HWND, HINSTANCE);

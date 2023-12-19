@@ -5,12 +5,14 @@ EllipseShape::~EllipseShape(void) {};
 
 void EllipseShape::Show(HDC hdc, BOOL PaintingNow, BOOL isSelected)
 {
-    if(!PaintingNow) SetColor(hdc, brushColor);
-    if(isSelected) SetColor(hdc, RGB(255, 0, 0));
+    if (!PaintingNow && !isSelected)
+    {
+        SetColor(hdc, brushColor);
+    }
 
     Ellipse(hdc, xs1, ys1, xs2, ys2);
 
-    if (!PaintingNow || isSelected)
+    if (!PaintingNow && !isSelected)
     {
         SelectObject(hdc, hBrushOld);
         DeleteObject(hBrush);

@@ -1,73 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="CubeShape" Collapsed="true">
-    <Position X="6" Y="0.5" Width="1.5" />
+    <Position X="6.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAACBAAAAAAAAAAAAAAEAAAAAAAAAAAABAA=</HashCode>
       <FileName>CubeShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EllipseShape" Collapsed="true">
-    <Position X="3.25" Y="2" Width="1.5" />
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAIAAAAAAAAAAAAEAAAAAAgAAQAARAA=</HashCode>
       <FileName>EllipseShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LineOOShape" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="LineShape" FixedFromPoint="true">
+      <Path>
+        <Point X="5.438" Y="2.441" />
+        <Point X="5.438" Y="2.875" />
+        <Point X="3.5" Y="2.875" />
+        <Point X="3.5" Y="3.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAABAAAAAAAAAAIAAAEAAAAAACAAAAABAA=</HashCode>
       <FileName>LineOOShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LineShape" Collapsed="true">
-    <Position X="5" Y="2" Width="1.5" />
+    <Position X="5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAABAM=</HashCode>
       <FileName>LineShape.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PointShape" Collapsed="true">
-    <Position X="1.5" Y="2" Width="1.5" />
+  <Class Name="MainEditor" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAgAAAACAAAAEAAAAAAAAAAAABAA=</HashCode>
+      <HashCode>QAKAABCAACEAAAAAAAAAQIACADAAEAQgEABkgCAABAQ=</HashCode>
+      <FileName>MainEditor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainTable" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQAAQAAEAAAAAAAAQCAEEAABAAAABABAAUA=</HashCode>
+      <FileName>MainTable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointShape" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAgAAAACAAAAEAACAAAgAAAAABAA=</HashCode>
       <FileName>PointShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RectShape" Collapsed="true">
-    <Position X="6.75" Y="2" Width="1.5" />
+    <Position X="7.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgACAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAABAA=</HashCode>
+      <HashCode>AgADAAAAAgAABAAAAAAAAAAAAAAEAAAAAAAAAAAABAA=</HashCode>
       <FileName>RectShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Scene" Collapsed="true">
-    <Position X="9" Y="4" Width="1.5" />
+    <Position X="9.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgABAAAAAQAAEAAAAAAAAACAAAAg=</HashCode>
+      <HashCode>AAAAEACgAAAAAAAAgATAAAAAQAAEAAAAOAAAECAAAAg=</HashCode>
       <FileName>Scene.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Shape" Collapsed="true">
-    <Position X="4.25" Y="4" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAgAAAABAAAgAAAAAABAAAEEGAAAAAAABAABgA=</HashCode>
       <FileName>shape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ToolBar" Collapsed="true">
-    <Position X="7" Y="4.75" Width="1.5" />
+    <Position X="11.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAEAAAAAIgAAAAAAACAAAAAQAACAgAAAAAA=</HashCode>
+      <HashCode>AAAAAAgAAAEAAAAAIgAAAAAAACAAAAAQAACAgAAAAAA=</HashCode>
       <FileName>ToolBar.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MyEditor" Collapsed="true">
-    <Position X="7" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAKAAACAACFAAAAAAAAAQIACADCBEAAgEAAEgAAABAQ=</HashCode>
-      <FileName>MyEditor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
